@@ -1,18 +1,24 @@
-import "./src/styles/global.css";
-import { StatusBar } from "expo-status-bar";
-import { Text, View } from "react-native";
+import React from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { View, StatusBar, StyleSheet } from "react-native";
+import { ShoppingListScreen } from "./src/screens/ShoppingListScreen";
+
+const queryClient = new QueryClient();
 
 export default function App() {
   return (
-    // Вместо style={styles.container} используем className
-    <View className="flex-1 items-center justify-center bg-slate-900">
-      <Text className="text-white text-2xl font-bold">
-        NativeWind + Tailwind
-      </Text>
-      <Text className="text-slate-400 mt-2">
-        Если фон темный, значит всё ок!
-      </Text>
-      <StatusBar style="light" />
-    </View>
+    <QueryClientProvider client={queryClient}>
+      <View style={styles.container}>
+        <StatusBar barStyle="dark-content" />
+        <ShoppingListScreen />
+      </View>
+    </QueryClientProvider>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#f8fafc",
+  },
+});

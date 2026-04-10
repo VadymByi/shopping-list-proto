@@ -1,6 +1,22 @@
 {
   "items": [
-    { "id": "1", "title": "Молоко", "amount": 1, "isCompleted": false },
-    { "id": "2", "title": "Хлеб", "amount": 2, "isCompleted": true }
+    {
+      "id": "1",
+      "title": "Молоко",
+      "amount": 1,
+      "isCompleted": false
+    },
+    {
+      "id": "2",
+      "title": "Хлеб",
+      "amount": 2,
+      "isCompleted": true
+    },
+    {
+      "title": "банан",
+      "amount": 1,
+      "isCompleted": false,
+      "id": "Up846F9"
+    }
   ]
 }
