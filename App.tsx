@@ -1,20 +1,18 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import "./src/styles/global.css";
+import { StatusBar } from "expo-status-bar";
+import { Text, View } from "react-native";
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
+    // Вместо style={styles.container} используем className
+    <View className="flex-1 items-center justify-center bg-slate-900">
+      <Text className="text-white text-2xl font-bold">
+        NativeWind + Tailwind
+      </Text>
+      <Text className="text-slate-400 mt-2">
+        Если фон темный, значит всё ок!
+      </Text>
+      <StatusBar style="light" />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
