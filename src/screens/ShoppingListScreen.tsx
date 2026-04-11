@@ -53,6 +53,9 @@ export const ShoppingListScreen = () => {
   return (
     <View style={styles.wrapper}>
       <View style={styles.container}>
+        <Text className="text-3xl font-bold text-red-500 underline">
+          ПЕРЕВІРКА TAILWIND
+        </Text>
         <Text style={styles.title}>Мій список</Text>
 
         <AddItemForm />

@@ -2,6 +2,11 @@ import React from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { View, StatusBar, StyleSheet } from "react-native";
 import { ShoppingListScreen } from "./src/screens/ShoppingListScreen";
+import { NativeWindStyleSheet } from "nativewind";
+
+NativeWindStyleSheet.setOutput({
+  default: "native",
+});
 
 const queryClient = new QueryClient();
 
