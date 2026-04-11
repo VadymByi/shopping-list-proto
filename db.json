@@ -2,15 +2,15 @@
   "items": [
     {
       "id": "1",
-      "title": "Молоко",
+      "title": "Молококо",
       "amount": 1,
       "isCompleted": false
     },
     {
       "id": "2",
-      "title": "Хлеб",
+      "title": "Хлеба",
       "amount": 2,
-      "isCompleted": true
+      "isCompleted": false
     },
     {
       "title": "колбас, сыров и винишка",
