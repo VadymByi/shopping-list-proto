@@ -5,8 +5,15 @@ import { useShoppingItems } from "../hooks/useShoppingItems";
 import { ShoppingItemCard } from "../components/ShoppingItemCard";
 
 export const ShoppingListScreen = () => {
-  const { items, isLoading, error, deleteItem, updateItem, setEditingItem } =
-    useShoppingItems();
+  const {
+    items,
+    isLoading,
+    error,
+    deleteItem,
+    updateItem,
+    editingItem,
+    setEditingItem,
+  } = useShoppingItems();
 
   const completedCount = items.filter((i) => i.isCompleted).length;
   const progress = items.length > 0 ? (completedCount / items.length) * 100 : 0;
@@ -42,8 +49,12 @@ export const ShoppingListScreen = () => {
         </View>
 
         <View className="flex-1 px-4 pt-6">
-          <AddItemForm />
+          <AddItemForm
+            editingItem={editingItem}
+            setEditingItem={setEditingItem}
+          />
 
+          {/* Прогресс-бар */}
           {items.length > 0 && (
             <View className="px-2 mb-6">
               <View className="flex-row justify-between items-end mb-2">
