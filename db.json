@@ -4,19 +4,25 @@
       "id": "2",
       "title": "Хлеба",
       "amount": 2,
-      "isCompleted": true
+      "isCompleted": false
     },
     {
       "title": "колбас, сыров и винишка",
       "amount": 1,
-      "isCompleted": true,
+      "isCompleted": false,
       "id": "zpyUjLi"
     },
     {
       "title": "ммивии",
       "amount": 1,
-      "isCompleted": false,
+      "isCompleted": true,
       "id": "VSxyyBT"
+    },
+    {
+      "title": "апиачинтчн",
+      "amount": 1,
+      "isCompleted": true,
+      "id": "c8sXlZO"
     }
   ]
 }

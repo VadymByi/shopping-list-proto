@@ -1,80 +1,96 @@
-import React, { useState } from "react";
-import {
-  View,
-  TextInput,
-  TouchableOpacity,
-  Text,
-  StyleSheet,
-} from "react-native";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { addItem } from "../api/client";
+import React, { useEffect, useState } from "react";
+import { View, TextInput, TouchableOpacity, Text } from "react-native";
+import { useShoppingItems } from "../hooks/useShoppingItems";
+import { Plus, Check, X } from "lucide-react-native";
 
 export const AddItemForm = () => {
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState("1");
-  const queryClient = useQueryClient();
 
-  const mutation = useMutation({
-    mutationFn: addItem,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["shopping-items"] });
-      setTitle("");
-      setAmount("1");
-    },
-  });
+  const { addItem, updateItem, editingItem, setEditingItem } =
+    useShoppingItems();
+
+  useEffect(() => {
+    if (editingItem) {
+      setTitle(editingItem.title);
+      setAmount(editingItem.amount.toString());
+    }
+  }, [editingItem]);
+
+  const handleSubmit = () => {
+    if (!title.trim()) return;
+
+    if (editingItem) {
+      updateItem({
+        ...editingItem,
+        title,
+        amount: Number(amount),
+      });
+      setEditingItem(null);
+    } else {
+      addItem({
+        title,
+        amount: Number(amount),
+        isCompleted: false,
+      });
+    }
+
+    setTitle("");
+    setAmount("1");
+  };
+
+  const handleCancel = () => {
+    setEditingItem(null);
+    setTitle("");
+    setAmount("1");
+  };
 
   return (
-    <View style={styles.form}>
-      <TextInput
-        style={styles.input}
-        placeholder="Что купить?"
-        value={title}
-        onChangeText={setTitle}
-      />
-      <View style={styles.row}>
-        <TextInput
-          style={[styles.input, { flex: 1, marginBottom: 0 }]}
-          placeholder="Кол-во"
-          keyboardType="numeric"
-          value={amount}
-          onChangeText={setAmount}
-        />
+    <View className="mb-6 bg-white p-4 rounded-3xl border border-slate-100 shadow-sm">
+      <View className="flex-row items-center justify-between mb-2 px-1">
+        <Text className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+          {editingItem ? "Редагування" : "Новий товар"}
+        </Text>
+        {editingItem && (
+          <TouchableOpacity onPress={handleCancel}>
+            <X size={18} color="#94a3b8" />
+          </TouchableOpacity>
+        )}
+      </View>
+
+      <View className="flex-row space-x-2">
+        <View className="flex-[3]">
+          <TextInput
+            className="bg-slate-50 p-3 rounded-xl border border-slate-100 text-slate-800"
+            placeholder="Що купити?"
+            placeholderTextColor="#94a3b8"
+            value={title}
+            onChangeText={setTitle}
+          />
+        </View>
+
+        <View className="flex-1 mx-2">
+          <TextInput
+            className="bg-slate-50 p-3 rounded-xl border border-slate-100 text-slate-800 text-center"
+            keyboardType="numeric"
+            value={amount}
+            onChangeText={setAmount}
+          />
+        </View>
+
         <TouchableOpacity
-          style={styles.button}
-          onPress={() =>
-            mutation.mutate({
-              title,
-              amount: Number(amount),
-              isCompleted: false,
-            })
-          }
+          onPress={handleSubmit}
+          className={`p-3 rounded-xl justify-center items-center ${
+            editingItem ? "bg-green-500" : "bg-indigo-600"
+          }`}
         >
-          <Text style={styles.buttonText}>Додати</Text>
+          {editingItem ? (
+            <Check size={24} color="white" />
+          ) : (
+            <Plus size={24} color="white" />
+          )}
         </TouchableOpacity>
       </View>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  form: {
-    marginBottom: 24,
-    backgroundColor: "white",
-    padding: 16,
-    borderRadius: 12,
-  },
-  input: {
-    backgroundColor: "#f1f5f9",
-    padding: 12,
-    borderRadius: 8,
-    marginBottom: 12,
-  },
-  row: { flexDirection: "row", gap: 10 },
-  button: {
-    backgroundColor: "#0ea5e9",
-    paddingHorizontal: 20,
-    justifyContent: "center",
-    borderRadius: 8,
-  },
-  buttonText: { color: "white", fontWeight: "bold" },
-});
