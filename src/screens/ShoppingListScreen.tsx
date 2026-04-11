@@ -1,56 +1,31 @@
 import React from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { deleteItem, fetchItems, updateItem } from "../api/client";
 import {
   ActivityIndicator,
   View,
   Text,
   FlatList,
   StyleSheet,
-  TouchableOpacity,
-  Alert,
   Platform,
 } from "react-native";
 import { AddItemForm } from "../components/AddItemForm";
+import { useShoppingItems } from "../hooks/useShoppingItems";
+import { ShoppingItem } from "../types";
+import { ShoppingItemCard } from "../components/ShoppingItemCard";
 
 export const ShoppingListScreen = () => {
-  const queryClient = useQueryClient();
+  const { items, isLoading, error, deleteItem, updateItem } =
+    useShoppingItems();
 
-  const {
-    data: items,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["shopping-items"],
-    queryFn: fetchItems,
-  });
-
-  const deleteMutation = useMutation({
-    mutationFn: deleteItem,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["shopping-items"] });
-    },
-  });
-
-  const toggleMutation = useMutation({
-    mutationFn: ({
-      id,
-      ...updates
-    }: { id: string } & Partial<(typeof items)[0]>) => updateItem(id, updates),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["shopping-items"] });
-    },
-  });
-
-  const handleEdit = (item: any) => {
+  const handleEdit = (item: ShoppingItem) => {
     if (Platform.OS === "web") {
-      const newTitle = window.prompt("Змінити назву: ", item.title);
+      const newTitle = window.prompt("Змінити назву:", item.title);
       const newAmount = window.prompt(
-        "Змінити кількість: ",
+        "Змінити кількість:",
         item.amount.toString(),
       );
+
       if (newTitle && newAmount) {
-        toggleMutation.mutate({
+        updateItem({
           id: item.id,
           title: newTitle,
           amount: parseInt(newAmount),
@@ -58,6 +33,7 @@ export const ShoppingListScreen = () => {
       }
     }
   };
+
   if (isLoading) {
     return (
       <View style={styles.center}>
@@ -83,51 +59,21 @@ export const ShoppingListScreen = () => {
 
         <FlatList
           data={items}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <View
-              style={[
-                styles.card,
-                { flexDirection: "row", alignItems: "center" },
-              ]}
-            >
-              <TouchableOpacity
-                style={{ flex: 1 }}
-                onPress={() =>
-                  toggleMutation.mutate({
-                    id: item.id,
-                    isCompleted: !item.isCompleted,
-                  })
-                }
-              >
-                <Text
-                  style={[
-                    styles.itemText,
-                    item.isCompleted && styles.completedText,
-                  ]}
-                >
-                  {item.title} — {item.amount} шт.
-                </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                onPress={() => handleEdit(item)}
-                style={styles.editButton}
-              >
-                <Text style={{ color: "#64748b" }}>✎</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                onPress={() => deleteMutation.mutate(item.id)}
-                style={styles.deleteButton}
-              >
-                <Text style={styles.deleteButtonText}>✕</Text>
-              </TouchableOpacity>
-            </View>
+            <ShoppingItemCard
+              item={item}
+              onToggle={() =>
+                updateItem({ id: item.id, isCompleted: !item.isCompleted })
+              }
+              onDelete={() => deleteItem(item.id)}
+              onEdit={() => handleEdit(item)}
+            />
           )}
           ListEmptyComponent={
             <Text style={styles.emptyText}>Список порожній</Text>
           }
+          contentContainerStyle={{ paddingBottom: 40 }}
         />
       </View>
     </View>
@@ -144,7 +90,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     width: "100%",
-    maxWidth: 600, // Магия! На десктопе список не будет шире 600px
+    maxWidth: 600,
     backgroundColor: "#f8fafc",
   },
   center: { flex: 1, justifyContent: "center", alignItems: "center" },
@@ -154,35 +100,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     color: "#1e293b",
   },
-  card: {
-    backgroundColor: "white",
-    padding: 16,
-    borderRadius: 12,
-    marginBottom: 12,
-    borderWidth: 1,
-    borderColor: "#e2e8f0",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 3.84,
-    elevation: 2, // для Android
-  },
-  itemText: { fontSize: 18, color: "#334155" },
-  completedText: { textDecorationLine: "line-through", color: "#94a3b8" },
-  emptyText: { textAlign: "center", color: "#94a3b8", marginTop: 20 },
-  deleteButton: {
-    padding: 8,
-    backgroundColor: "#fee2e2",
-    borderRadius: 8,
-    marginLeft: 10,
-  },
-  deleteButtonText: { color: "#ef4444", fontWeight: "bold" },
-  editButton: {
-    padding: 8,
-    backgroundColor: "#f1f5f9",
-    borderRadius: 8,
-    marginLeft: 5,
-  },
+  emptyText: { textAlign: "center", color: "#94a3b8", marginTop: 40 },
 });
 
 // import { useQuery } from "@tanstack/react-query";

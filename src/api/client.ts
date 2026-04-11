@@ -1,6 +1,10 @@
 import axios from "axios";
 import { ShoppingItem, CreateShoppingItem } from "../types";
 
+interface UpdateItemArgs extends Partial<ShoppingItem> {
+  id: string;
+}
+
 const API_URL = "http://localhost:3000";
 
 export const api = axios.create({
@@ -17,10 +21,7 @@ export const addItem = async (item: CreateShoppingItem) => {
   return data;
 };
 
-export const updateItem = async (
-  id: string,
-  updates: Partial<ShoppingItem>,
-) => {
+export const updateItem = async ({ id, ...updates }: UpdateItemArgs) => {
   const { data } = await api.patch<ShoppingItem>(`/items/${id}`, updates);
   return data;
 };
