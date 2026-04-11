@@ -4,7 +4,7 @@
       "id": "2",
       "title": "Хлеба",
       "amount": 2,
-      "isCompleted": false
+      "isCompleted": true
     },
     {
       "title": "колбас, сыров и винишка",
@@ -13,16 +13,17 @@
       "id": "zpyUjLi"
     },
     {
-      "title": "ммивии",
-      "amount": 1,
-      "isCompleted": true,
-      "id": "VSxyyBT"
-    },
-    {
-      "title": "апиачинтчн",
+      "title": "паста",
       "amount": 1,
       "isCompleted": true,
       "id": "c8sXlZO"
+    },
+    {
+      "title": "фурляля",
+      "amount": 5,
+      "isCompleted": true,
+      "id": "ZZGOTV_"
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }

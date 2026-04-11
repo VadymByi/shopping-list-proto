@@ -5,27 +5,27 @@ interface UpdateItemArgs extends Partial<ShoppingItem> {
   id: string;
 }
 
-const API_URL = "http://localhost:3000";
+const BASE_URL = process.env.EXPO_PUBLIC_API_URL || "http://localhost:3000";
 
-export const api = axios.create({
-  baseURL: API_URL,
+export const apiClient = axios.create({
+  baseURL: BASE_URL,
 });
 
 export const fetchItems = async () => {
-  const { data } = await api.get<ShoppingItem[]>("/items");
+  const { data } = await apiClient.get<ShoppingItem[]>("/items");
   return data;
 };
 
 export const addItem = async (item: CreateShoppingItem) => {
-  const { data } = await api.post<ShoppingItem>("items", item);
+  const { data } = await apiClient.post<ShoppingItem>("items", item);
   return data;
 };
 
 export const updateItem = async ({ id, ...updates }: UpdateItemArgs) => {
-  const { data } = await api.patch<ShoppingItem>(`/items/${id}`, updates);
+  const { data } = await apiClient.patch<ShoppingItem>(`/items/${id}`, updates);
   return data;
 };
 
 export const deleteItem = async (id: string) => {
-  await api.delete(`/items/${id}`);
+  await apiClient.delete(`/items/${id}`);
 };

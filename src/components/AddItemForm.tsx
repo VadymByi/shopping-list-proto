@@ -2,13 +2,21 @@ import React, { useEffect, useState } from "react";
 import { View, TextInput, TouchableOpacity, Text } from "react-native";
 import { useShoppingItems } from "../hooks/useShoppingItems";
 import { Plus, Check, X } from "lucide-react-native";
+import { ShoppingItem } from "../types";
 
-export const AddItemForm = () => {
+interface AddItemFormProps {
+  editingItem: ShoppingItem | null;
+  setEditingItem: (item: ShoppingItem | null) => void;
+}
+
+export const AddItemForm = ({
+  editingItem,
+  setEditingItem,
+}: AddItemFormProps) => {
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState("1");
 
-  const { addItem, updateItem, editingItem, setEditingItem } =
-    useShoppingItems();
+  const { addItem, updateItem } = useShoppingItems();
 
   useEffect(() => {
     if (editingItem) {
