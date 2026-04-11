@@ -1,16 +1,19 @@
 import React from "react";
-import { useQuery } from "@tanstack/react-query";
-import { fetchItems } from "../api/client";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { deleteItem, fetchItems, updateItem } from "../api/client";
 import {
   ActivityIndicator,
   View,
   Text,
   FlatList,
   StyleSheet,
+  TouchableOpacity,
 } from "react-native";
 import { AddItemForm } from "../components/AddItemForm";
 
 export const ShoppingListScreen = () => {
+  const queryClient = useQueryClient();
+
   const {
     data: items,
     isLoading,
@@ -18,6 +21,21 @@ export const ShoppingListScreen = () => {
   } = useQuery({
     queryKey: ["shopping-items"],
     queryFn: fetchItems,
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: deleteItem,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["shopping-items"] });
+    },
+  });
+
+  const toggleMutation = useMutation({
+    mutationFn: ({ id, isCompleted }: { id: string; isCompleted: boolean }) =>
+      updateItem(id, { isCompleted }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["shopping-items"] });
+    },
   });
 
   if (isLoading) {
@@ -46,15 +64,37 @@ export const ShoppingListScreen = () => {
         data={items}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <View style={styles.card}>
-            <Text
-              style={[
-                styles.itemText,
-                item.isCompleted && styles.completedText,
-              ]}
+          <View
+            style={[
+              styles.card,
+              { flexDirection: "row", alignItems: "center" },
+            ]}
+          >
+            <TouchableOpacity
+              style={{ flex: 1 }}
+              onPress={() =>
+                toggleMutation.mutate({
+                  id: item.id,
+                  isCompleted: !item.isCompleted,
+                })
+              }
             >
-              {item.title} — {item.amount} шт.
-            </Text>
+              <Text
+                style={[
+                  styles.itemText,
+                  item.isCompleted && styles.completedText,
+                ]}
+              >
+                {item.title} — {item.amount} шт.
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => deleteMutation.mutate(item.id)}
+              style={styles.deleteButton}
+            >
+              <Text style={styles.deleteButtonText}>✕</Text>
+            </TouchableOpacity>
           </View>
         )}
         ListEmptyComponent={
@@ -90,6 +130,13 @@ const styles = StyleSheet.create({
   itemText: { fontSize: 18, color: "#334155" },
   completedText: { textDecorationLine: "line-through", color: "#94a3b8" },
   emptyText: { textAlign: "center", color: "#94a3b8", marginTop: 20 },
+  deleteButton: {
+    padding: 8,
+    backgroundColor: "#fee2e2",
+    borderRadius: 8,
+    marginLeft: 10,
+  },
+  deleteButtonText: { color: "#ef4444", fontWeight: "bold" },
 });
 
 // import { useQuery } from "@tanstack/react-query";
