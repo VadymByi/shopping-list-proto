@@ -8,6 +8,8 @@ import {
   FlatList,
   StyleSheet,
   TouchableOpacity,
+  Alert,
+  Platform,
 } from "react-native";
 import { AddItemForm } from "../components/AddItemForm";
 
@@ -31,13 +33,31 @@ export const ShoppingListScreen = () => {
   });
 
   const toggleMutation = useMutation({
-    mutationFn: ({ id, isCompleted }: { id: string; isCompleted: boolean }) =>
-      updateItem(id, { isCompleted }),
+    mutationFn: ({
+      id,
+      ...updates
+    }: { id: string } & Partial<(typeof items)[0]>) => updateItem(id, updates),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["shopping-items"] });
     },
   });
 
+  const handleEdit = (item: any) => {
+    if (Platform.OS === "web") {
+      const newTitle = window.prompt("Змінити назву: ", item.title);
+      const newAmount = window.prompt(
+        "Змінити кількість: ",
+        item.amount.toString(),
+      );
+      if (newTitle && newAmount) {
+        toggleMutation.mutate({
+          id: item.id,
+          title: newTitle,
+          amount: parseInt(newAmount),
+        });
+      }
+    }
+  };
   if (isLoading) {
     return (
       <View style={styles.center}>
@@ -55,58 +75,78 @@ export const ShoppingListScreen = () => {
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Мій список</Text>
+    <View style={styles.wrapper}>
+      <View style={styles.container}>
+        <Text style={styles.title}>Мій список</Text>
 
-      <AddItemForm />
+        <AddItemForm />
 
-      <FlatList
-        data={items}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <View
-            style={[
-              styles.card,
-              { flexDirection: "row", alignItems: "center" },
-            ]}
-          >
-            <TouchableOpacity
-              style={{ flex: 1 }}
-              onPress={() =>
-                toggleMutation.mutate({
-                  id: item.id,
-                  isCompleted: !item.isCompleted,
-                })
-              }
+        <FlatList
+          data={items}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <View
+              style={[
+                styles.card,
+                { flexDirection: "row", alignItems: "center" },
+              ]}
             >
-              <Text
-                style={[
-                  styles.itemText,
-                  item.isCompleted && styles.completedText,
-                ]}
+              <TouchableOpacity
+                style={{ flex: 1 }}
+                onPress={() =>
+                  toggleMutation.mutate({
+                    id: item.id,
+                    isCompleted: !item.isCompleted,
+                  })
+                }
               >
-                {item.title} — {item.amount} шт.
-              </Text>
-            </TouchableOpacity>
+                <Text
+                  style={[
+                    styles.itemText,
+                    item.isCompleted && styles.completedText,
+                  ]}
+                >
+                  {item.title} — {item.amount} шт.
+                </Text>
+              </TouchableOpacity>
 
-            <TouchableOpacity
-              onPress={() => deleteMutation.mutate(item.id)}
-              style={styles.deleteButton}
-            >
-              <Text style={styles.deleteButtonText}>✕</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-        ListEmptyComponent={
-          <Text style={styles.emptyText}>Список порожній</Text>
-        }
-      />
+              <TouchableOpacity
+                onPress={() => handleEdit(item)}
+                style={styles.editButton}
+              >
+                <Text style={{ color: "#64748b" }}>✎</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => deleteMutation.mutate(item.id)}
+                style={styles.deleteButton}
+              >
+                <Text style={styles.deleteButtonText}>✕</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+          ListEmptyComponent={
+            <Text style={styles.emptyText}>Список порожній</Text>
+          }
+        />
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, backgroundColor: "#f8fafc" },
+  wrapper: {
+    flex: 1,
+    backgroundColor: "#f1f5f9",
+    alignItems: "center",
+  },
+  container: {
+    flex: 1,
+    padding: 20,
+    width: "100%",
+    maxWidth: 600, // Магия! На десктопе список не будет шире 600px
+    backgroundColor: "#f8fafc",
+  },
   center: { flex: 1, justifyContent: "center", alignItems: "center" },
   title: {
     fontSize: 28,
@@ -137,6 +177,12 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   deleteButtonText: { color: "#ef4444", fontWeight: "bold" },
+  editButton: {
+    padding: 8,
+    backgroundColor: "#f1f5f9",
+    borderRadius: 8,
+    marginLeft: 5,
+  },
 });
 
 // import { useQuery } from "@tanstack/react-query";
