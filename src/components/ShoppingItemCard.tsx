@@ -18,10 +18,10 @@ export const ShoppingItemCard = ({
 }: ShoppingItemCardProps) => {
   return (
     <View
-      className={`flex-row items-center justify-between p-4 mb-3 rounded-2xl border ${
+      className={`flex-row items-center justify-between p-4 mb-3 rounded-2xl border transition-all duration-300 ease-in-out ${
         item.isCompleted
-          ? "bg-slate-50 border-slate-200 opacity-60"
-          : "bg-white border-slate-100 shadow-sm shadow-slate-200"
+          ? "bg-slate-50 border-slate-200 opacity-60 scale-[0.98]"
+          : "bg-white border-slate-100 shadow-sm shadow-slate-200 scale-100"
       }`}
     >
       <View className="flex-row items-center flex-1">
@@ -35,7 +35,7 @@ export const ShoppingItemCard = ({
 
         <View className="flex-1">
           <Text
-            className={`text-lg font-medium ${
+            className={`text-lg font-bold ${
               item.isCompleted
                 ? "line-through text-slate-400"
                 : "text-slate-800"
@@ -43,25 +43,25 @@ export const ShoppingItemCard = ({
           >
             {item.title}
           </Text>
-          <Text className="text-sm text-slate-500 font-medium">
+          <Text className="text-xs text-slate-500 font-medium">
             Кількість: {item.amount}
           </Text>
         </View>
       </View>
 
-      <View className="flex-row items-center space-x-2">
+      <View className="flex-row items-center">
         <TouchableOpacity
           onPress={onEdit}
-          className="p-2 bg-slate-100 rounded-xl"
+          className="p-2.5 bg-slate-100 rounded-xl mr-2"
         >
-          <Edit3 size={18} color="#64748b" />
+          <Edit3 size={16} color="#64748b" />
         </TouchableOpacity>
 
         <TouchableOpacity
           onPress={onDelete}
-          className="p-2 bg-red-50 rounded-xl ml-2"
+          className="p-2.5 bg-red-50 rounded-xl"
         >
-          <Trash2 size={18} color="#ef4444" />
+          <Trash2 size={16} color="#ef4444" />
         </TouchableOpacity>
       </View>
     </View>
