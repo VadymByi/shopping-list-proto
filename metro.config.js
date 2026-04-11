@@ -1,12 +1,13 @@
 const { getDefaultConfig } = require("expo/metro-config");
 
-module.exports = (() => {
-  const config = getDefaultConfig(__dirname);
-  try {
-    const { withNativeWind } = require("nativewind/utils");
-    return withNativeWind(config, { input: "./src/styles/global.css" });
-  } catch (e) {
-    console.warn("NativeWind не найден, загружаем стандартный конфиг");
-    return config;
-  }
-})();
+const config = getDefaultConfig(__dirname);
+
+// Включаем поддержку CSS (необходимо для Tailwind в Web)
+config.transformer.getTransformOptions = async () => ({
+  transform: {
+    experimentalImportSupport: false,
+    inlineRequires: true,
+  },
+});
+
+module.exports = config;

@@ -1,3 +1,4 @@
+import "./src/global.css";
 import React from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { View, StatusBar, StyleSheet } from "react-native";

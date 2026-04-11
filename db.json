@@ -1,22 +1,22 @@
 {
   "items": [
     {
-      "id": "1",
-      "title": "Молококо",
-      "amount": 1,
-      "isCompleted": false
-    },
-    {
       "id": "2",
       "title": "Хлеба",
       "amount": 2,
-      "isCompleted": false
+      "isCompleted": true
     },
     {
       "title": "колбас, сыров и винишка",
       "amount": 1,
-      "isCompleted": false,
+      "isCompleted": true,
       "id": "zpyUjLi"
+    },
+    {
+      "title": "ммивии",
+      "amount": 1,
+      "isCompleted": false,
+      "id": "VSxyyBT"
     }
   ]
 }
