@@ -21,7 +21,7 @@
     {
       "title": "карамельки",
       "amount": 2,
-      "isCompleted": true,
+      "isCompleted": false,
       "id": "ZZGOTV_"
     }
   ],
