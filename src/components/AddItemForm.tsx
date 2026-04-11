@@ -26,19 +26,29 @@ export const AddItemForm = ({
   }, [editingItem]);
 
   const handleSubmit = () => {
-    if (!title.trim()) return;
+    const trimmedTitle = title.trim();
+    const numAmount = Number(amount);
+
+    if (!trimmedTitle) {
+      alert("Будь ласка, введіть назву товару");
+      return;
+    }
+    if (isNaN(numAmount) || numAmount <= 0) {
+      alert("Кількість має бути числом більше 0");
+      return;
+    }
 
     if (editingItem) {
       updateItem({
         ...editingItem,
-        title,
-        amount: Number(amount),
+        title: trimmedTitle,
+        amount: numAmount,
       });
       setEditingItem(null);
     } else {
       addItem({
-        title,
-        amount: Number(amount),
+        title: trimmedTitle,
+        amount: numAmount,
         isCompleted: false,
       });
     }

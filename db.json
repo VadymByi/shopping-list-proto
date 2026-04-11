@@ -2,14 +2,14 @@
   "items": [
     {
       "id": "2",
-      "title": "Хлеба",
+      "title": "винишко",
       "amount": 2,
       "isCompleted": true
     },
     {
-      "title": "колбас, сыров и винишка",
+      "title": "колбасыр",
       "amount": 1,
-      "isCompleted": false,
+      "isCompleted": true,
       "id": "zpyUjLi"
     },
     {
@@ -19,8 +19,8 @@
       "id": "c8sXlZO"
     },
     {
-      "title": "фурляля",
-      "amount": 5,
+      "title": "карамельки",
+      "amount": 2,
       "isCompleted": true,
       "id": "ZZGOTV_"
     }
