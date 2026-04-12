@@ -23,7 +23,7 @@ export const AddItemForm = ({
   editingItem,
   setEditingItem,
 }: AddItemFormProps) => {
-  const { addItem, updateItem } = useShoppingItems();
+  const { addItem, updateItem, items } = useShoppingItems();
   const { isDark } = useTheme();
 
   const {
@@ -50,14 +50,26 @@ export const AddItemForm = ({
   }, [editingItem, setValue]);
 
   const onSubmit = async (data: FormOutput) => {
+    const trimmedTitle = data.title.trim();
+
+    const existingItem = items.find(
+      (item) => item.title.toLowerCase() === trimmedTitle.toLowerCase(),
+    );
+
     const validatedData = {
-      title: data.title.trim(),
+      title: trimmedTitle,
       amount: data.amount,
     };
 
     if (editingItem) {
       updateItem({ ...editingItem, ...validatedData });
       setEditingItem(null);
+    } else if (existingItem) {
+      updateItem({
+        id: existingItem.id,
+        isCompleted: false,
+        amount: data.amount,
+      });
     } else {
       addItem({ ...validatedData, isCompleted: false });
     }
@@ -98,9 +110,9 @@ export const AddItemForm = ({
                   errors.title
                     ? "border-red-400"
                     : "border-slate-100 dark:border-slate-700"
-                } text-slate-800 dark:text-slate-100`}
+                } text-slate-900 dark:text-white`}
                 placeholder="Що купити?"
-                placeholderTextColor={isDark ? "#475569" : "#94a3b8"}
+                placeholderTextColor={isDark ? "#64748b" : "#94a3b8"}
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
@@ -126,9 +138,9 @@ export const AddItemForm = ({
                   errors.amount
                     ? "border-red-400"
                     : "border-slate-100 dark:border-slate-700"
-                } text-slate-800 dark:text-slate-100 text-center`}
+                } text-slate-900 dark:text-white text-center`}
                 keyboardType="numeric"
-                placeholderTextColor={isDark ? "#475569" : "#94a3b8"}
+                placeholderTextColor={isDark ? "#64748b" : "#94a3b8"}
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value?.toString()}
