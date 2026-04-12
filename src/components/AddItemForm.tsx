@@ -1,7 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { View, TextInput, TouchableOpacity, Text } from "react-native";
-import { useShoppingItems } from "../hooks/useShoppingItems";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Plus, Check, X } from "lucide-react-native";
+import * as z from "zod";
+
+import { useShoppingItems } from "../hooks/useShoppingItems";
+import { itemSchema } from "../schemas/itemSchema";
 import { ShoppingItem } from "../types";
 
 interface AddItemFormProps {
@@ -9,58 +14,52 @@ interface AddItemFormProps {
   setEditingItem: (item: ShoppingItem | null) => void;
 }
 
+type FormInput = z.input<typeof itemSchema>;
+type FormOutput = z.output<typeof itemSchema>;
+
 export const AddItemForm = ({
   editingItem,
   setEditingItem,
 }: AddItemFormProps) => {
-  const [title, setTitle] = useState("");
-  const [amount, setAmount] = useState("1");
-
   const { addItem, updateItem } = useShoppingItems();
+
+  const {
+    control,
+    handleSubmit,
+    reset,
+    setValue,
+    formState: { errors },
+  } = useForm<FormInput, unknown, FormOutput>({
+    resolver: zodResolver(itemSchema),
+    defaultValues: { title: "", amount: 1 },
+  });
 
   useEffect(() => {
     if (editingItem) {
-      setTitle(editingItem.title);
-      setAmount(editingItem.amount.toString());
+      setValue("title", editingItem.title);
+      setValue("amount", editingItem.amount);
     }
-  }, [editingItem]);
+  }, [editingItem, setValue]);
 
-  const handleSubmit = () => {
-    const trimmedTitle = title.trim();
-    const numAmount = Number(amount);
-
-    if (!trimmedTitle) {
-      alert("Будь ласка, введіть назву товару");
-      return;
-    }
-    if (isNaN(numAmount) || numAmount <= 0) {
-      alert("Кількість має бути числом більше 0");
-      return;
-    }
+  const onSubmit = (data: z.output<typeof itemSchema>) => {
+    const validatedData = {
+      title: data.title.trim(),
+      amount: data.amount,
+    };
 
     if (editingItem) {
-      updateItem({
-        ...editingItem,
-        title: trimmedTitle,
-        amount: numAmount,
-      });
+      updateItem({ ...editingItem, ...validatedData });
       setEditingItem(null);
     } else {
-      addItem({
-        title: trimmedTitle,
-        amount: numAmount,
-        isCompleted: false,
-      });
+      addItem({ ...validatedData, isCompleted: false });
     }
 
-    setTitle("");
-    setAmount("1");
+    reset({ title: "", amount: 1 });
   };
 
   const handleCancel = () => {
     setEditingItem(null);
-    setTitle("");
-    setAmount("1");
+    reset({ title: "", amount: 1 });
   };
 
   return (
@@ -69,6 +68,7 @@ export const AddItemForm = ({
         <Text className="text-xs font-bold text-slate-400 uppercase tracking-widest">
           {editingItem ? "Редагування" : "Новий товар"}
         </Text>
+
         {editingItem && (
           <TouchableOpacity onPress={handleCancel}>
             <X size={18} color="#94a3b8" />
@@ -77,28 +77,60 @@ export const AddItemForm = ({
       </View>
 
       <View className="flex-row space-x-2">
+        {/* TITLE */}
         <View className="flex-[3]">
-          <TextInput
-            className="bg-slate-50 p-3 rounded-xl border border-slate-100 text-slate-800"
-            placeholder="Що купити?"
-            placeholderTextColor="#94a3b8"
-            value={title}
-            onChangeText={setTitle}
+          <Controller
+            control={control}
+            name="title"
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                className={`bg-slate-50 p-3 rounded-xl border ${
+                  errors.title ? "border-red-400" : "border-slate-100"
+                } text-slate-800`}
+                placeholder="Що купити?"
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+              />
+            )}
           />
+
+          {errors.title && (
+            <Text className="text-[10px] text-red-500 mt-1 ml-1">
+              {errors.title.message}
+            </Text>
+          )}
         </View>
 
+        {/* AMOUNT */}
         <View className="flex-1 mx-2">
-          <TextInput
-            className="bg-slate-50 p-3 rounded-xl border border-slate-100 text-slate-800 text-center"
-            keyboardType="numeric"
-            value={amount}
-            onChangeText={setAmount}
+          <Controller
+            control={control}
+            name="amount"
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                className={`bg-slate-50 p-3 rounded-xl border ${
+                  errors.amount ? "border-red-400" : "border-slate-100"
+                } text-slate-800 text-center`}
+                keyboardType="numeric"
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value?.toString()}
+              />
+            )}
           />
+
+          {errors.amount && (
+            <Text className="text-[10px] text-red-500 mt-1 text-center">
+              {errors.amount.message}
+            </Text>
+          )}
         </View>
 
+        {/* BUTTON */}
         <TouchableOpacity
-          onPress={handleSubmit}
-          className={`p-3 rounded-xl justify-center items-center ${
+          onPress={handleSubmit(onSubmit)}
+          className={`p-3 h-[48px] rounded-xl justify-center items-center ${
             editingItem ? "bg-green-500" : "bg-indigo-600"
           }`}
         >
