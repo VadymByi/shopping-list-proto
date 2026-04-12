@@ -4,6 +4,7 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { AddItemForm } from "../components/AddItemForm";
 import { useShoppingItems } from "../hooks/useShoppingItems";
 import { ShoppingItemCard } from "../components/ShoppingItemCard";
+import { ShoppingListSkeleton } from "../components/ShoppingListSkeleton";
 
 export const ShoppingListScreen = () => {
   const {
@@ -25,11 +26,7 @@ export const ShoppingListScreen = () => {
   });
 
   if (isLoading) {
-    return (
-      <View className="flex-1 justify-center items-center bg-slate-50">
-        <ActivityIndicator size="large" color="#4f46e5" />
-      </View>
-    );
+    return <ShoppingListSkeleton />;
   }
 
   if (error) {
