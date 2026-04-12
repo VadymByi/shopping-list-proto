@@ -23,12 +23,6 @@
       "amount": 2,
       "isCompleted": false,
       "id": "ZZGOTV_"
-    },
-    {
-      "title": "чуфарапуфара",
-      "amount": 1,
-      "isCompleted": false,
-      "id": "0H0-j6WaQ3Q"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
