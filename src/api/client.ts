@@ -5,10 +5,10 @@ interface UpdateItemArgs extends Partial<ShoppingItem> {
   id: string;
 }
 
-// 1. Берем IP из инва. Если его там нет — ставим localhost.
+//  Берем IP из инва. Если его там нет — ставим локалхост
 const apiIp = process.env.EXPO_PUBLIC_API_IP || "localhost";
 
-// 2. Формируем итоговый URL. Порт 3000 у нас всегда одинаковый.
+// фоормируем итоговый URL. Порт 3000 у нас всегда одинаковый.
 const BASE_URL = `http://${apiIp}:3000`;
 
 console.log("🚀 API Connect to:", BASE_URL);
@@ -16,7 +16,7 @@ console.log("🚀 API Connect to:", BASE_URL);
 export const apiClient = axios.create({
   baseURL: BASE_URL,
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 });
 

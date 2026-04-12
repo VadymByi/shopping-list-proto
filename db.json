@@ -1,28 +1,28 @@
 {
   "items": [
     {
-      "id": "2",
-      "title": "винишко",
-      "amount": 2,
-      "isCompleted": false
-    },
-    {
-      "title": "колбасыр",
+      "title": "то",
       "amount": 1,
-      "isCompleted": true,
-      "id": "zpyUjLi"
-    },
-    {
-      "title": "паста",
-      "amount": 1,
-      "isCompleted": true,
-      "id": "c8sXlZO"
-    },
-    {
-      "title": "карамельки",
-      "amount": 2,
       "isCompleted": false,
-      "id": "ZZGOTV_"
+      "id": "L3UfP1HEOc4"
+    },
+    {
+      "title": "сё",
+      "amount": 1,
+      "isCompleted": false,
+      "id": "T9lQEVR6wZ8"
+    },
+    {
+      "title": "пятое",
+      "amount": 1,
+      "isCompleted": false,
+      "id": "1YR-BG1Q7yQ"
+    },
+    {
+      "title": "десятое",
+      "amount": 10,
+      "isCompleted": false,
+      "id": "DSVRUJfkWQI"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

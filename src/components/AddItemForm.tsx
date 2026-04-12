@@ -7,7 +7,7 @@ import * as z from "zod";
 
 import { useShoppingItems } from "../hooks/useShoppingItems";
 import { useFormCache } from "../hooks/useFormCache";
-import { useTheme } from "../hooks/useTheme"; // Импортируем для цвета плейсхолдера
+import { useTheme } from "../hooks/useTheme";
 import { itemSchema } from "../schemas/itemSchema";
 import { ShoppingItem } from "../types";
 
