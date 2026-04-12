@@ -1,5 +1,6 @@
 import * as z from "zod";
 
+// VALIDATION SCHEMA
 export const itemSchema = z.object({
   title: z
     .string()
@@ -17,4 +18,5 @@ export const itemSchema = z.object({
     }),
 });
 
+// TYPES
 export type ItemFormData = z.infer<typeof itemSchema>;

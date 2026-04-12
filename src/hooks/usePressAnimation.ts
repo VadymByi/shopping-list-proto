@@ -1,32 +1,26 @@
-import { useRef } from "react";
-import { Animated } from "react-native";
+import {
+  useSharedValue,
+  useAnimatedStyle,
+  withSpring,
+} from "react-native-reanimated";
 
 export const usePressAnimation = () => {
-  const scale = useRef(new Animated.Value(1)).current;
+  // ANIMATION STATE
+  const scale = useSharedValue(1);
 
-  const handlePressIn = () => {
-    Animated.spring(scale, {
-      toValue: 0.97,
-      useNativeDriver: true,
-      speed: 20,
-      bounciness: 6,
-    }).start();
+  // ANIMATED STYLES
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+  }));
+
+  // INTERACTION HANDLERS
+  const onPressIn = () => {
+    scale.value = withSpring(0.96);
   };
 
-  const handlePressOut = (onPress?: () => void) => {
-    Animated.spring(scale, {
-      toValue: 1,
-      useNativeDriver: true,
-      speed: 20,
-      bounciness: 6,
-    }).start();
-
-    onPress && onPress();
+  const onPressOut = () => {
+    scale.value = withSpring(1);
   };
 
-  return {
-    scale,
-    handlePressIn,
-    handlePressOut,
-  };
+  return { animatedStyle, onPressIn, onPressOut };
 };

@@ -1,18 +1,18 @@
 import axios from "axios";
 import { ShoppingItem, CreateShoppingItem } from "../types";
 
+// TYPES & INTERFACES
 interface UpdateItemArgs extends Partial<ShoppingItem> {
   id: string;
 }
 
-//  Берем IP из инва. Если его там нет — ставим локалхост
+// CONFIGURATION & BASE URL
 const apiIp = process.env.EXPO_PUBLIC_API_IP || "localhost";
-
-// фоормируем итоговый URL. Порт 3000 у нас всегда одинаковый.
 const BASE_URL = `http://${apiIp}:3000`;
 
 console.log("🚀 API Connect to:", BASE_URL);
 
+// AXIOS INSTANCE
 export const apiClient = axios.create({
   baseURL: BASE_URL,
   headers: {
@@ -20,6 +20,7 @@ export const apiClient = axios.create({
   },
 });
 
+// API METHODS
 export const fetchItems = async () => {
   const { data } = await apiClient.get<ShoppingItem[]>("/items");
   return data;

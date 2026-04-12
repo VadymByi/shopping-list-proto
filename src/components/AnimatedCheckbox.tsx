@@ -1,40 +1,46 @@
-import React, { useEffect, useRef } from "react";
-import { Animated } from "react-native";
+import React, { useEffect } from "react";
+import Animated, {
+  useAnimatedStyle,
+  withTiming,
+  useSharedValue,
+} from "react-native-reanimated";
 import { CheckCircle2, Circle } from "lucide-react-native";
+import { View } from "react-native";
 
+// TYPES
 interface Props {
-  checked: boolean;
+  isCompleted: boolean;
 }
 
-export const AnimatedCheckbox = ({ checked }: Props) => {
-  const anim = useRef(new Animated.Value(checked ? 1 : 0)).current;
+export const AnimatedCheckbox = ({ isCompleted }: Props) => {
+  // ANIMATION STATE
+  const progress = useSharedValue(isCompleted ? 1 : 0);
 
+  // SIDE EFFECTS
   useEffect(() => {
-    Animated.spring(anim, {
-      toValue: checked ? 1 : 0,
-      useNativeDriver: true,
-      speed: 18,
-      bounciness: 10,
-    }).start();
-  }, [checked]);
+    progress.value = withTiming(isCompleted ? 1 : 0, { duration: 200 });
+  }, [isCompleted]);
 
-  const scale = anim.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0.8, 1.2],
+  // ANIMATED STYLES
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      opacity: progress.value,
+      transform: [{ scale: progress.value }],
+    };
   });
 
+  // RENDER
   return (
-    <Animated.View
-      style={{
-        transform: [{ scale }],
-        marginRight: 12,
-      }}
-    >
-      {checked ? (
-        <CheckCircle2 size={24} color="#10b981" />
-      ) : (
+    <View className="relative w-7 h-7 items-center justify-center">
+      {/* BACKGROUND CIRCLE */}
+      <View className="absolute">
         <Circle size={24} color="#94a3b8" />
-      )}
-    </Animated.View>
+      </View>
+
+      {/* ANIMATED OVERLAY ICON */}
+      <Animated.View style={animatedStyle}>
+        <CheckCircle2 size={24} color="#10b981" />
+      </Animated.View>
+    </View>
   );
 };

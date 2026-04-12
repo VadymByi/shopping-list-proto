@@ -1,8 +1,10 @@
 import { useColorScheme } from "nativewind";
 
 export const useTheme = () => {
-  const { colorScheme, setColorScheme, toggleColorScheme } = useColorScheme();
+  // NATIVEWIND THEME HOOK
+  const { colorScheme, toggleColorScheme } = useColorScheme();
 
+  // EXPOSED THEME STATE & METHODS
   return {
     theme: colorScheme,
     toggleTheme: toggleColorScheme,

@@ -2,27 +2,25 @@
   "items": [
     {
       "title": "то",
-      "amount": 1,
-      "isCompleted": false,
-      "id": "L3UfP1HEOc4"
+      "amount": "1",
+      "id": "2UQahL3XwuQ"
     },
     {
       "title": "сё",
-      "amount": 1,
-      "isCompleted": false,
-      "id": "T9lQEVR6wZ8"
+      "amount": "1",
+      "id": "Ax835ADF86Q"
     },
     {
       "title": "пятое",
-      "amount": 1,
-      "isCompleted": true,
-      "id": "1YR-BG1Q7yQ"
+      "amount": "1",
+      "id": "DWWPnWK_-NM",
+      "isCompleted": false
     },
     {
       "title": "десятое",
-      "amount": 10,
-      "isCompleted": false,
-      "id": "DSVRUJfkWQI"
+      "amount": "1",
+      "id": "ycPE7aYYt-M",
+      "isCompleted": false
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
