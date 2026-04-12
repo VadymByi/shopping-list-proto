@@ -24,6 +24,8 @@ export const useShoppingItems = () => {
       onSuccess();
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     },
+    onError: () =>
+      alert("Не вдалося додати товар. Перевірте підключення до сервера."),
   });
 
   const deleteMutation = useMutation({
@@ -32,11 +34,13 @@ export const useShoppingItems = () => {
       onSuccess();
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     },
+    onError: () => alert("Помилка при видаленні. Спробуйте ще раз"),
   });
 
   const updateMutation = useMutation({
     mutationFn: updateItem,
     onSuccess: onSuccess,
+    onError: () => alert("Не вдалося оновити товар"),
   });
 
   const { data, isLoading, error } = itemsQuery;

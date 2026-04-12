@@ -17,7 +17,7 @@ export const fetchItems = async () => {
 };
 
 export const addItem = async (item: CreateShoppingItem) => {
-  const { data } = await apiClient.post<ShoppingItem>("items", item);
+  const { data } = await apiClient.post<ShoppingItem>("/items", item);
   return data;
 };
 
