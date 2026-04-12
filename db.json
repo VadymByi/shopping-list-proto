@@ -3,7 +3,7 @@
     {
       "title": "то",
       "amount": 1,
-      "isCompleted": true,
+      "isCompleted": false,
       "id": "L3UfP1HEOc4"
     },
     {
@@ -15,13 +15,13 @@
     {
       "title": "пятое",
       "amount": 1,
-      "isCompleted": false,
+      "isCompleted": true,
       "id": "1YR-BG1Q7yQ"
     },
     {
       "title": "десятое",
       "amount": 10,
-      "isCompleted": true,
+      "isCompleted": false,
       "id": "DSVRUJfkWQI"
     }
   ],
