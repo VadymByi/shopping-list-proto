@@ -5,10 +5,19 @@ interface UpdateItemArgs extends Partial<ShoppingItem> {
   id: string;
 }
 
-const BASE_URL = process.env.EXPO_PUBLIC_API_URL || "http://localhost:3000";
+// 1. Берем IP из инва. Если его там нет — ставим localhost.
+const apiIp = process.env.EXPO_PUBLIC_API_IP || "localhost";
+
+// 2. Формируем итоговый URL. Порт 3000 у нас всегда одинаковый.
+const BASE_URL = `http://${apiIp}:3000`;
+
+console.log("🚀 API Connect to:", BASE_URL);
 
 export const apiClient = axios.create({
   baseURL: BASE_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
 export const fetchItems = async () => {
