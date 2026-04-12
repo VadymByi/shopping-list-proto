@@ -38,23 +38,35 @@ Backend Mock: JSON-server
 Icons: Lucide React Native
 
 🚀 Getting Started
-You can run the project using Docker (recommended) or locally using Node.js.
+You can run the project using Docker (recommended for zero-configuration) or locally using Node.js.
 
 Option 1: Docker (Recommended)
 If you have Docker installed, simply run:
 
 Bash
-docker-compose up
+docker-compose up --build
+Web App: http://localhost:8081
+
+API Server: http://localhost:3000
+
 Option 2: Local Execution (No Docker)
 Install dependencies:
 
 Bash
 npm install
-Start both API and Frontend:
+Start the API Server:
+It is recommended to start the backend first to ensure the data is ready:
 
 Bash
-npm run dev
-This command uses concurrently to launch the JSON-server and the Expo Web bundler simultaneously.
+npm run server
+Server runs at http://localhost:3000
+
+Start the Frontend:
+In a new terminal window, run:
+
+Bash
+npx expo start --web
+Alternatively, you can use npm run dev to launch both the server and the web bundler simultaneously using concurrently.
 
 🏗 Architecture Decisions
 State Management: Used React Query for server state to handle caching and synchronization. Local UI state for editing is managed via a lifting-state pattern to ensure synchronization between the list and the form.
