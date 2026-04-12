@@ -1,16 +1,17 @@
 import React, { useEffect } from "react";
 import { View, TextInput, TouchableOpacity, Text } from "react-native";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Plus, Check, X } from "lucide-react-native";
 import * as z from "zod";
 
 import { useShoppingItems } from "../hooks/useShoppingItems";
 import { useFormCache } from "../hooks/useFormCache";
-import { useTheme } from "../hooks/useTheme"; // Импортируем для цвета плейсхолдера
+import { useTheme } from "../hooks/useTheme";
 import { itemSchema } from "../schemas/itemSchema";
 import { ShoppingItem } from "../types";
 
+// TYPES
 interface AddItemFormProps {
   editingItem: ShoppingItem | null;
   setEditingItem: (item: ShoppingItem | null) => void;
@@ -23,6 +24,7 @@ export const AddItemForm = ({
   editingItem,
   setEditingItem,
 }: AddItemFormProps) => {
+  // HOOKS & STATE
   const { addItem, updateItem } = useShoppingItems();
   const { isDark } = useTheme();
 
@@ -35,45 +37,58 @@ export const AddItemForm = ({
     formState: { errors },
   } = useForm<FormInput, unknown, FormOutput>({
     resolver: zodResolver(itemSchema),
-    defaultValues: { title: "", amount: 1 },
+    defaultValues: {
+      title: "",
+      amount: 1,
+    },
   });
 
   const watchedValues = watch();
+  const { clearCache } = useFormCache(
+    watchedValues as FormOutput,
+    setValue,
+    !!editingItem,
+  );
 
-  const { clearCache } = useFormCache(watchedValues, setValue, !!editingItem);
-
+  // SIDE EFFECTS
   useEffect(() => {
     if (editingItem) {
       setValue("title", editingItem.title);
-      setValue("amount", editingItem.amount);
+      setValue("amount", Number(editingItem.amount));
     }
   }, [editingItem, setValue]);
 
-  const onSubmit = async (data: FormOutput) => {
-    const validatedData = {
-      title: data.title.trim(),
-      amount: data.amount,
-    };
+  // HANDLERS
+  const onSubmit: SubmitHandler<FormOutput> = (data) => {
+    const title = data.title.trim();
+    const amount = String(data.amount);
 
     if (editingItem) {
-      updateItem({ ...editingItem, ...validatedData });
+      updateItem({
+        id: editingItem.id,
+        title,
+        amount,
+        isCompleted: editingItem.isCompleted,
+      });
       setEditingItem(null);
     } else {
-      addItem({ ...validatedData, isCompleted: false });
+      addItem({ title, amount });
     }
 
-    await clearCache();
+    clearCache();
     reset({ title: "", amount: 1 });
   };
 
-  const handleCancel = async () => {
+  const handleCancel = () => {
     setEditingItem(null);
-    await clearCache();
+    clearCache();
     reset({ title: "", amount: 1 });
   };
 
+  // RENDER
   return (
     <View className="mb-6 bg-white dark:bg-slate-800 p-4 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm">
+      {/* HEADER SECTION */}
       <View className="flex-row items-center justify-between mb-2 px-1">
         <Text className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">
           {editingItem ? "Редагування" : "Новий товар"}
@@ -86,8 +101,9 @@ export const AddItemForm = ({
         )}
       </View>
 
+      {/* INPUTS ROW */}
       <View className="flex-row space-x-2">
-        {/* TITLE */}
+        {/* TITLE INPUT */}
         <View className="flex-[3]">
           <Controller
             control={control}
@@ -107,7 +123,6 @@ export const AddItemForm = ({
               />
             )}
           />
-
           {errors.title && (
             <Text className="text-[10px] text-red-500 mt-1 ml-1">
               {errors.title.message}
@@ -115,7 +130,7 @@ export const AddItemForm = ({
           )}
         </View>
 
-        {/* AMOUNT */}
+        {/* AMOUNT INPUT */}
         <View className="flex-1 mx-2">
           <Controller
             control={control}
@@ -130,12 +145,15 @@ export const AddItemForm = ({
                 keyboardType="numeric"
                 placeholderTextColor={isDark ? "#475569" : "#94a3b8"}
                 onBlur={onBlur}
-                onChangeText={onChange}
+                // PROHIBIT NON-NUMERIC INPUT
+                onChangeText={(text) => {
+                  const cleaned = text.replace(/[^0-9]/g, "");
+                  onChange(cleaned);
+                }}
                 value={value?.toString()}
               />
             )}
           />
-
           {errors.amount && (
             <Text className="text-[10px] text-red-500 mt-1 text-center">
               {errors.amount.message}
@@ -143,7 +161,7 @@ export const AddItemForm = ({
           )}
         </View>
 
-        {/* BUTTON */}
+        {/* ACTION BUTTON */}
         <TouchableOpacity
           onPress={handleSubmit(onSubmit)}
           className={`p-3 h-[48px] rounded-xl justify-center items-center ${

@@ -37,70 +37,62 @@ Backend Mock: JSON-server
 
 Icons: Lucide React Native
 
+Пардон, исправляюсь. Сделал структуру ещё более строгой и профессиональной для README.
+
 🚀 Getting Started
-You can run the project using Docker (recommended for zero-configuration) or locally using Node.js.
+Choose one of the following options to run the project. Option 1 (Local Development) is recommended for active coding as it provides faster hot-reloads and better debugging tools.
 
-Option 1: Docker (Recommended)
-If you have Docker installed, simply run:
+🔹 Option 1: Local Development (Recommended)
+The most efficient way to run both the Frontend and Backend simultaneously.
 
-Bash
-docker-compose up --build
+Install dependencies:
+npm install
+
+Run the development suite:
+npm run dev
+This command uses concurrently to launch the JSON-server (Port 3000) and the Expo Web bundler (Port 8081) at once.
+
+Access points:
+
 Web App: http://localhost:8081
 
 API Server: http://localhost:3000
 
-Option 2: Local Execution (No Docker)
-Install dependencies:
-
-Bash
-npm install
-Start the API Server:
-It is recommended to start the backend first to ensure the data is ready:
-
-Bash
-npm run server
-Server runs at http://localhost:3000
-
-Start the Frontend:
-In a new terminal window, run:
-
-Bash
-npx expo start --web
-Alternatively, you can use npm run dev to launch both the server and the web bundler simultaneously using concurrently.
-Option 3: Mobile Testing (Expo Go)
-To run the app on a physical smartphone with a direct connection to the backend:
+🔹 Option 2: Mobile Testing (Expo Go)
+To test the application on a physical smartphone with a live connection to your local backend.
 
 Preparation: Install the Expo Go app from the App Store (iOS) or Google Play (Android).
 
-Network Setup:
-Find your computer's local IP address (run ipconfig in the Windows terminal and find the IPv4 Address).
-Example: 192.168.0.106.
+Network Setup: Ensure both your computer and phone are connected to the same Wi-Fi network.
 
-Environment Variable:
-Create a .env file in the root directory.
-
-Add your IP address:
+Environment Setup:
+Create a .env file in the root directory and add your local IPv4 address:
 EXPO_PUBLIC_API_IP=192.168.x.x
+(Find your IP by running ipconfig in the Windows terminal).
 
-Note: Your phone and computer must be connected to the same Wi-Fi network.
+Start and Connect:
+Run npm run dev, then scan the QR code displayed in your terminal using your phone’s camera (iOS) or the Expo Go app (Android).
 
-Starting the Project:
-To see data on the phone, the API server must run in parallel with the bundler. Run:
-Bash
-npm run dev
-Connection:
+💡 Troubleshooting: If the app loads but fails to fetch data, ensure that your Windows Firewall allows incoming connections on port 3000.
 
-If the QR code didn't appear or you need a separate session, run:
-Bash
-npx expo start
-Note: You may be prompted that port 8081 is busy (by the previous process). Press Y to use the next available port (8082).
+🔹 Option 3: Docker Execution
+Use this option if you prefer an isolated environment without installing Node.js locally.
 
-Scan the QR code in the terminal using your phone's camera (iOS) or the Expo Go app (Android).
+Build and Launch:
+docker-compose up --build
 
-Troubleshooting:
-If the app loads but shows "Error loading data", ensure your Windows Firewall allows incoming connections on port 3000.
+Access points:
 
-Check that your .env contains the correct IP address and restart the process.
+Web App: http://localhost:8081
+
+API Server: http://localhost:3000
+
+🛠 Utility Commands
+npm run server — Start only the JSON-server.
+
+npx expo start --web — Start only the Expo Web bundler.
+
+npx expo start -c — Start with a full cache clear (useful if UI isn't updating).
 
 🏗 Architecture Decisions
 State Management: Used React Query for server state to handle caching and synchronization. Local UI state for editing is managed via a lifting-state pattern to ensure synchronization between the list and the form.

@@ -1,8 +1,12 @@
+// CORE INTERFACES
 export interface ShoppingItem {
   id: string;
   title: string;
-  amount: number;     
+  amount: string; // HANDLED AS STRING FROM API
   isCompleted: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
-export type CreateShoppingItem = Omit<ShoppingItem, 'id'>;
+// DERIVED TYPES
+export type CreateShoppingItem = Pick<ShoppingItem, "title" | "amount">;

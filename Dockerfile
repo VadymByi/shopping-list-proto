@@ -1,19 +1,19 @@
-# Используем Node.js на базе легкого дистрибутива Linux
+# BASE IMAGE
 FROM node:20-alpine
 
+# WORKING DIRECTORY
 WORKDIR /app
 
-# Копируем только файлы зависимостей для эффективного кеширования
+# DEPENDENCIES
 COPY package*.json ./
-
-# Устанавливаем зависимости внутри контейнера
 RUN npm install
 
-# Копируем все остальные файлы проекта
+# PROJECT FILES
 COPY . .
 
-# Прокидываем порты (8081 - Expo Web, 3000 - JSON-server)
+# PORTS CONFIGURATION
 EXPOSE 8081
 EXPOSE 3000
 
-# Мы будем запускать сервисы через docker-compose
+# EXECUTION
+# Services are managed via docker-compose

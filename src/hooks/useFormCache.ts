@@ -1,14 +1,16 @@
 import { useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { UseFormSetValue } from "react-hook-form";
+import { UseFormSetValue, Path, FieldValues } from "react-hook-form";
 
+// CONSTANTS
 const FORM_CACHE_KEY = "shopping_form_draft";
 
-export const useFormCache = (
-  watchedValues: any,
-  setValue: UseFormSetValue<any>,
+export const useFormCache = <T extends FieldValues>(
+  watchedValues: T,
+  setValue: UseFormSetValue<T>,
   isEditing: boolean,
 ) => {
+  // LOAD DRAFT ON MOUNT
   useEffect(() => {
     const loadDraft = async () => {
       if (isEditing) return;
@@ -17,7 +19,7 @@ export const useFormCache = (
         if (saved) {
           const parsed = JSON.parse(saved);
           Object.keys(parsed).forEach((key) => {
-            setValue(key, parsed[key]);
+            setValue(key as Path<T>, parsed[key]);
           });
         }
       } catch (e) {
@@ -27,6 +29,7 @@ export const useFormCache = (
     loadDraft();
   }, [isEditing, setValue]);
 
+  // SAVE DRAFT ON CHANGE
   useEffect(() => {
     const saveDraft = async () => {
       if (!isEditing && (watchedValues.title || watchedValues.amount)) {
@@ -43,6 +46,7 @@ export const useFormCache = (
     saveDraft();
   }, [watchedValues, isEditing]);
 
+  // CACHE MANIPULATION METHODS
   const clearCache = async () => {
     try {
       await AsyncStorage.removeItem(FORM_CACHE_KEY);
