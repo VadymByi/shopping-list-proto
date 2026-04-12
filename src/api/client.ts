@@ -10,8 +10,6 @@ interface UpdateItemArgs extends Partial<ShoppingItem> {
 const apiIp = process.env.EXPO_PUBLIC_API_IP || "localhost";
 const BASE_URL = `http://${apiIp}:3000`;
 
-console.log("🚀 API Connect to:", BASE_URL);
-
 // AXIOS INSTANCE
 export const apiClient = axios.create({
   baseURL: BASE_URL,

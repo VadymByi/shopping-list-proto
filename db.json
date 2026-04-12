@@ -1,25 +1,28 @@
 {
   "items": [
     {
-      "title": "то",
-      "amount": "1",
-      "id": "2UQahL3XwuQ"
-    },
-    {
       "title": "сё",
-      "amount": "1",
-      "id": "Ax835ADF86Q"
-    },
-    {
-      "title": "пятое",
-      "amount": "1",
-      "id": "DWWPnWK_-NM",
-      "isCompleted": false
+      "amount": "2",
+      "id": "Ax835ADF86Q",
+      "isCompleted": true,
+      "updatedAt": "2026-04-12T22:58:19.048Z"
     },
     {
       "title": "десятое",
       "amount": "1",
       "id": "ycPE7aYYt-M",
+      "isCompleted": false
+    },
+    {
+      "title": "пятое",
+      "amount": "1",
+      "id": "41eDQrNL4oQ",
+      "isCompleted": true
+    },
+    {
+      "title": "то",
+      "amount": "1",
+      "id": "SrmNhDnF7eE",
       "isCompleted": false
     }
   ],

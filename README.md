@@ -43,20 +43,31 @@ Icons: Lucide React Native
 Choose one of the following options to run the project. Option 1 (Local Development) is recommended for active coding as it provides faster hot-reloads and better debugging tools.
 
 🔹 Option 1: Local Development (Recommended)
-The most efficient way to run both the Frontend and Backend simultaneously.
+To ensure the application connects correctly to the data, you should start the Backend server first, then launch the Mobile bundler.
 
-Install dependencies:
-npm install
+1. Install dependencies:
 
-Run the development suite:
-npm run dev
-This command uses concurrently to launch the JSON-server (Port 3000) and the Expo Web bundler (Port 8081) at once.
+Bash
+npm install 2. Start the API Server (Backend):
+
+Bash
+npm run server
+Runs the JSON-server on Port 3000. Keep this terminal window open.
+
+3. Start the Expo App (Frontend):
+   Open a new terminal window and run:
+
+Bash
+npx expo start
+Launches the Expo Go bundler on Port 8081. Press 'w' for Web or scan the QR code for iOS/Android.
 
 Access points:
 
 Web App: http://localhost:8081
 
 API Server: http://localhost:3000
+
+Note: If npm run dev fails on your system, using the two separate commands above is the most stable method to ensure both services are fully initialized.
 
 🔹 Option 2: Mobile Testing (Expo Go)
 To test the application on a physical smartphone with a live connection to your local backend.

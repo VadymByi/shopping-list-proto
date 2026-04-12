@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, TouchableOpacity, Pressable } from "react-native";
 import Animated from "react-native-reanimated";
 import { Trash2, Edit3 } from "lucide-react-native";
+import { useTranslation } from "react-i18next";
 import { ShoppingItem } from "../types";
 import { usePressAnimation } from "../hooks/usePressAnimation";
 import { AnimatedCheckbox } from "./AnimatedCheckbox";
@@ -20,7 +21,8 @@ export const ShoppingItemCard = ({
   onDelete,
   onEdit,
 }: ShoppingItemCardProps) => {
-  // ANIMATION HOOKS
+  // HOOKS
+  const { t } = useTranslation();
   const { animatedStyle, onPressIn, onPressOut } = usePressAnimation();
 
   // RENDER
@@ -53,7 +55,7 @@ export const ShoppingItemCard = ({
               {item.title}
             </Text>
             <Text className="text-xs text-slate-500 dark:text-slate-400 font-medium">
-              Кількість: {item.amount}
+              {t("form.amount")}: {item.amount}
             </Text>
           </View>
         </View>
