@@ -9,13 +9,13 @@
     {
       "title": "колбасыр",
       "amount": 1,
-      "isCompleted": false,
+      "isCompleted": true,
       "id": "zpyUjLi"
     },
     {
       "title": "паста",
       "amount": 1,
-      "isCompleted": false,
+      "isCompleted": true,
       "id": "c8sXlZO"
     },
     {

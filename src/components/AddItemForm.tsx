@@ -7,6 +7,7 @@ import * as z from "zod";
 
 import { useShoppingItems } from "../hooks/useShoppingItems";
 import { useFormCache } from "../hooks/useFormCache";
+import { useTheme } from "../hooks/useTheme"; // Импортируем для цвета плейсхолдера
 import { itemSchema } from "../schemas/itemSchema";
 import { ShoppingItem } from "../types";
 
@@ -23,6 +24,7 @@ export const AddItemForm = ({
   setEditingItem,
 }: AddItemFormProps) => {
   const { addItem, updateItem } = useShoppingItems();
+  const { isDark } = useTheme();
 
   const {
     control,
@@ -71,9 +73,9 @@ export const AddItemForm = ({
   };
 
   return (
-    <View className="mb-6 bg-white p-4 rounded-3xl border border-slate-100 shadow-sm">
+    <View className="mb-6 bg-white dark:bg-slate-800 p-4 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm">
       <View className="flex-row items-center justify-between mb-2 px-1">
-        <Text className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+        <Text className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">
           {editingItem ? "Редагування" : "Новий товар"}
         </Text>
 
@@ -92,10 +94,13 @@ export const AddItemForm = ({
             name="title"
             render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
-                className={`bg-slate-50 p-3 rounded-xl border ${
-                  errors.title ? "border-red-400" : "border-slate-100"
-                } text-slate-800`}
+                className={`bg-slate-50 dark:bg-slate-900 p-3 rounded-xl border ${
+                  errors.title
+                    ? "border-red-400"
+                    : "border-slate-100 dark:border-slate-700"
+                } text-slate-800 dark:text-slate-100`}
                 placeholder="Що купити?"
+                placeholderTextColor={isDark ? "#475569" : "#94a3b8"}
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
@@ -117,10 +122,13 @@ export const AddItemForm = ({
             name="amount"
             render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
-                className={`bg-slate-50 p-3 rounded-xl border ${
-                  errors.amount ? "border-red-400" : "border-slate-100"
-                } text-slate-800 text-center`}
+                className={`bg-slate-50 dark:bg-slate-900 p-3 rounded-xl border ${
+                  errors.amount
+                    ? "border-red-400"
+                    : "border-slate-100 dark:border-slate-700"
+                } text-slate-800 dark:text-slate-100 text-center`}
                 keyboardType="numeric"
+                placeholderTextColor={isDark ? "#475569" : "#94a3b8"}
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value?.toString()}
@@ -139,7 +147,7 @@ export const AddItemForm = ({
         <TouchableOpacity
           onPress={handleSubmit(onSubmit)}
           className={`p-3 h-[48px] rounded-xl justify-center items-center ${
-            editingItem ? "bg-green-500" : "bg-indigo-600"
+            editingItem ? "bg-green-500" : "bg-indigo-600 dark:bg-indigo-500"
           }`}
         >
           {editingItem ? (
