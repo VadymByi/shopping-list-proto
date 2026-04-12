@@ -1,20 +1,20 @@
 import * as z from "zod";
 
-// VALIDATION SCHEMA
+// SCHEMA DEFINITION
 export const itemSchema = z.object({
   title: z
     .string()
     .trim()
-    .min(1, "Назва обов'язкова")
-    .max(50, "Назва занадто довга"),
+    .min(1, { message: "errors.required" })
+    .max(50, { message: "errors.too_long" }),
 
   amount: z.coerce
     .number()
     .refine((val) => !isNaN(val), {
-      message: "Обов'язково",
+      message: "errors.invalid_number",
     })
     .refine((val) => val > 0, {
-      message: "Має бути більше 0",
+      message: "errors.min_value",
     }),
 });
 

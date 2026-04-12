@@ -1,0 +1,25 @@
+{
+  "title": "Мій список 🛒",
+
+  "items_count_one": "{{count}} товар",
+  "items_count_few": "{{count}} товари",
+  "items_count_many": "{{count}} товарів",
+  "items_count_other": "{{count}} товару",
+
+  "progress": "Прогрес",
+  "error": "Помилка завантаження",
+
+  "form": {
+    "placeholder": "Що купити?",
+    "amount": "К-сть",
+    "new_item": "Новий товар",
+    "edit_title": "Редагування"
+  },
+
+  "errors": {
+    "required": "Обов'язкове поле",
+    "too_long": "Занадто довга назва",
+    "invalid_number": "Некоректне число",
+    "min_value": "Має бути більше 0"
+  }
+}
