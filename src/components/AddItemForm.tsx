@@ -6,6 +6,7 @@ import { Plus, Check, X } from "lucide-react-native";
 import * as z from "zod";
 
 import { useShoppingItems } from "../hooks/useShoppingItems";
+import { useFormCache } from "../hooks/useFormCache";
 import { itemSchema } from "../schemas/itemSchema";
 import { ShoppingItem } from "../types";
 
@@ -28,11 +29,16 @@ export const AddItemForm = ({
     handleSubmit,
     reset,
     setValue,
+    watch,
     formState: { errors },
   } = useForm<FormInput, unknown, FormOutput>({
     resolver: zodResolver(itemSchema),
     defaultValues: { title: "", amount: 1 },
   });
+
+  const watchedValues = watch();
+
+  const { clearCache } = useFormCache(watchedValues, setValue, !!editingItem);
 
   useEffect(() => {
     if (editingItem) {
@@ -41,7 +47,7 @@ export const AddItemForm = ({
     }
   }, [editingItem, setValue]);
 
-  const onSubmit = (data: z.output<typeof itemSchema>) => {
+  const onSubmit = async (data: FormOutput) => {
     const validatedData = {
       title: data.title.trim(),
       amount: data.amount,
@@ -54,11 +60,13 @@ export const AddItemForm = ({
       addItem({ ...validatedData, isCompleted: false });
     }
 
+    await clearCache();
     reset({ title: "", amount: 1 });
   };
 
-  const handleCancel = () => {
+  const handleCancel = async () => {
     setEditingItem(null);
+    await clearCache();
     reset({ title: "", amount: 1 });
   };
 

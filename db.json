@@ -4,18 +4,18 @@
       "id": "2",
       "title": "винишко",
       "amount": 2,
-      "isCompleted": true
+      "isCompleted": false
     },
     {
       "title": "колбасыр",
       "amount": 1,
-      "isCompleted": true,
+      "isCompleted": false,
       "id": "zpyUjLi"
     },
     {
       "title": "паста",
       "amount": 1,
-      "isCompleted": true,
+      "isCompleted": false,
       "id": "c8sXlZO"
     },
     {
