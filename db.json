@@ -2,28 +2,28 @@
   "items": [
     {
       "title": "сё",
-      "amount": "2",
+      "amount": "1",
       "id": "Ax835ADF86Q",
-      "isCompleted": true,
+      "isCompleted": false,
       "updatedAt": "2026-04-12T22:58:19.048Z"
     },
     {
       "title": "десятое",
-      "amount": "1",
+      "amount": "3",
       "id": "ycPE7aYYt-M",
-      "isCompleted": false
+      "isCompleted": true
     },
     {
       "title": "пятое",
       "amount": "1",
       "id": "41eDQrNL4oQ",
-      "isCompleted": true
+      "isCompleted": false
     },
     {
       "title": "то",
       "amount": "1",
       "id": "SrmNhDnF7eE",
-      "isCompleted": false
+      "isCompleted": true
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { ShoppingItem, CreateShoppingItem } from "../types";
 import * as Haptics from "expo-haptics";
 
-// TYPES & INTERFACES
+// TYPES
 interface MutationContext {
   previousItems: ShoppingItem[] | undefined;
 }
@@ -13,14 +13,14 @@ export const useShoppingItems = () => {
   const queryClient = useQueryClient();
   const [editingItem, setEditingItem] = useState<ShoppingItem | null>(null);
 
-  // FETCH DATA
+  // FETCH LOGIC
   const itemsQuery = useQuery({
     queryKey: ["shopping-items"],
     queryFn: fetchItems,
     staleTime: 1000 * 60 * 5,
   });
 
-  // OPTIMISTIC UPDATE PREPARATION
+  // OPTIMISTIC HELPERS
   const prepareOptimistic = async () => {
     await queryClient.cancelQueries({ queryKey: ["shopping-items"] });
     return queryClient.getQueryData<ShoppingItem[]>(["shopping-items"]);
@@ -44,7 +44,7 @@ export const useShoppingItems = () => {
       );
 
       if (existingItem) {
-        // REACTIVATE EXISTING ITEM
+        // RE-ACTIVATE EXISTING ITEM INSTEAD OF CREATING NEW
         const updatedItem: ShoppingItem = {
           ...existingItem,
           amount: newItemData.amount,
@@ -66,7 +66,7 @@ export const useShoppingItems = () => {
         throw new Error("HandledAsUpdate");
       }
 
-      // CREATE OPTIMISTIC NEW ITEM
+      // OPTIMISTIC INSERT
       const optimisticItem: ShoppingItem = {
         ...newItemData,
         id: Math.random().toString(),
@@ -130,7 +130,7 @@ export const useShoppingItems = () => {
       queryClient.invalidateQueries({ queryKey: ["shopping-items"] }),
   });
 
-  // EXPOSED METHODS & STATE
+  // EXPOSED INTERFACE
   return {
     items: itemsQuery.data ?? [],
     isLoading: itemsQuery.isLoading,

@@ -8,7 +8,9 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "server": "npx json-server --watch db.json --port 3000 --host 0.0.0.0",
-    "dev": "concurrently \"npm run server\" \"npm run web\""
+    "dev": "concurrently \"npm run server\" \"npm run web\"",
+    "lint": "cross-env ESLINT_USE_FLAT_CONFIG=false eslint . --ext .js,.jsx,.ts,.tsx",
+    "format": "prettier --write ."
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -36,6 +38,12 @@
   "devDependencies": {
     "@types/react": "~19.1.0",
     "concurrently": "^9.2.1",
+    "cross-env": "^10.1.0",
+    "eslint": "^9.39.4",
+    "eslint-config-expo": "^55.0.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
+    "prettier": "^3.8.2",
     "typescript": "~5.9.2"
   },
   "private": true

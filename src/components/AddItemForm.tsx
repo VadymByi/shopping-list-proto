@@ -106,7 +106,7 @@ export const AddItemForm = ({
       </View>
 
       {/* INPUTS ROW */}
-      <View className="flex-row space-x-2">
+      <View className="flex-row items-start space-x-2">
         {/* TITLE INPUT */}
         <View className="flex-[3]">
           <Controller
@@ -114,7 +114,7 @@ export const AddItemForm = ({
             name="title"
             render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
-                className={`bg-slate-50 dark:bg-slate-900 p-2 rounded-xl border ${
+                className={`bg-slate-50 dark:bg-slate-900 px-3 h-[42px] rounded-xl border ${
                   errors.title
                     ? "border-red-400"
                     : "border-slate-100 dark:border-slate-700"
@@ -124,6 +124,8 @@ export const AddItemForm = ({
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
+                onSubmitEditing={handleSubmit(onSubmit)}
+                blurOnSubmit={false}
               />
             )}
           />
@@ -141,7 +143,7 @@ export const AddItemForm = ({
             name="amount"
             render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
-                className={`bg-slate-50 dark:bg-slate-900 p-2 rounded-xl border ${
+                className={`bg-slate-50 dark:bg-slate-900 px-1 h-[42px] rounded-xl border ${
                   errors.amount
                     ? "border-red-400"
                     : "border-slate-100 dark:border-slate-700"
@@ -155,11 +157,12 @@ export const AddItemForm = ({
                   onChange(cleaned);
                 }}
                 value={value?.toString()}
+                onSubmitEditing={handleSubmit(onSubmit)}
               />
             )}
           />
           {errors.amount && (
-            <Text className="text-[9px] text-red-500 mt-0.5 text-center">
+            <Text className="text-[9px] text-red-500 mt-0.5 text-center leading-3">
               {errors.amount?.message && t(errors.amount.message)}
             </Text>
           )}
