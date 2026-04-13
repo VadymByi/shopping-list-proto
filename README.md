@@ -37,8 +37,6 @@ Backend Mock: JSON-server
 
 Icons: Lucide React Native
 
-Пардон, исправляюсь. Сделал структуру ещё более строгой и профессиональной для README.
-
 🚀 Getting Started
 Choose one of the following options to run the project. Option 1 (Local Development) is recommended for active coding as it provides faster hot-reloads and better debugging tools.
 
@@ -61,34 +59,14 @@ Runs the JSON-server on Port 3000. Keep this terminal window open.
 
 Bash
 npx expo start
-Launches the Expo Go bundler on Port 8081. Press 'w' for Web or scan the QR code for iOS/Android.
 
 Access points:
-
 Web App: http://localhost:8081
-
 API Server: http://localhost:3000
 
 Note: If npm run dev fails on your system, using the two separate commands above is the most stable method to ensure both services are fully initialized.
 
-🔹 Option 2: Mobile Testing (Expo Go)
-To test the application on a physical smartphone with a live connection to your local backend.
-
-Preparation: Install the Expo Go app from the App Store (iOS) or Google Play (Android).
-
-Network Setup: Ensure both your computer and phone are connected to the same Wi-Fi network.
-
-Environment Setup:
-Create a .env file in the root directory and add your local IPv4 address:
-EXPO_PUBLIC_API_IP=192.168.x.x
-(Find your IP by running ipconfig in the Windows terminal).
-
-Start and Connect:
-Run npm run dev, then scan the QR code displayed in your terminal using your phone’s camera (iOS) or the Expo Go app (Android).
-
-💡 Troubleshooting: If the app loads but fails to fetch data, ensure that your Windows Firewall allows incoming connections on port 3000.
-
-🔹 Option 3: Docker Execution
+🔹 Option 2: Docker Execution
 Use this option if you prefer an isolated environment without installing Node.js locally.
 
 Build and Launch:
@@ -134,4 +112,7 @@ Here are user stories that should be covered:
 - As a user, I can view my grocery list
 - As a user, I can add, edit and delete items to my grocery list
 - As a user, I can add an amount to each item in the list
-- As a user, I can mark an item as bought. This will cross out the title and mark the checkbox as checked. Technical requirements: - Layouts are not strict, but the
+- As a user, I can mark an item as bought. This will cross out the title and mark the checkbox as checked. Technical requirements: - Layouts are not strict, but the website should look good on desktop and mobile
+- Please use JSON-server (https://www.npmjs.com/package/json-server) and React query (https://tanstack.com/query/latest/docs/react/quick-start) to mock an API integration
+- @react-native-reusables/cli (https://reactnativereusables.com) to build layouts
+- Push your code to the git repo and share a link to the finished project.
