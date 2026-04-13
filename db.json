@@ -1,0 +1,30 @@
+{
+  "items": [
+    {
+      "title": "сё",
+      "amount": "1",
+      "id": "Ax835ADF86Q",
+      "isCompleted": false,
+      "updatedAt": "2026-04-12T22:58:19.048Z"
+    },
+    {
+      "title": "десятое",
+      "amount": "3",
+      "id": "ycPE7aYYt-M",
+      "isCompleted": true
+    },
+    {
+      "title": "пятое",
+      "amount": "1",
+      "id": "41eDQrNL4oQ",
+      "isCompleted": false
+    },
+    {
+      "title": "то",
+      "amount": "1",
+      "id": "SrmNhDnF7eE",
+      "isCompleted": true
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

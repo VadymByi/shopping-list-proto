@@ -1,0 +1,23 @@
+{
+  "title": "My List 🛒",
+
+  "items_count_one": "{{count}} item",
+  "items_count_other": "{{count}} items",
+
+  "progress": "Progress",
+  "error": "Loading error",
+
+  "form": {
+    "placeholder": "What to buy?",
+    "amount": "Qty",
+    "new_item": "New Item",
+    "edit_title": "Editing"
+  },
+
+  "errors": {
+    "required": "Required field",
+    "too_long": "Too long",
+    "invalid_number": "Invalid number",
+    "min_value": "Must be greater than 0"
+  }
+}
