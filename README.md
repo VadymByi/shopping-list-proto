@@ -48,7 +48,9 @@ To ensure the application connects correctly to the data, you should start the B
 1. Install dependencies:
 
 Bash
-npm install 2. Start the API Server (Backend):
+npm install
+
+2. Start the API Server (Backend):
 
 Bash
 npm run server

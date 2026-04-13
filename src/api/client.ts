@@ -1,18 +1,15 @@
 import axios from "axios";
 import { ShoppingItem, CreateShoppingItem } from "../types";
+import { API_CONFIG } from "../constants/api"; // IMPORT CONFIG
 
 // TYPES & INTERFACES
 interface UpdateItemArgs extends Partial<ShoppingItem> {
   id: string;
 }
 
-// CONFIGURATION & BASE URL
-const apiIp = process.env.EXPO_PUBLIC_API_IP || "localhost";
-const BASE_URL = `http://${apiIp}:3000`;
-
 // AXIOS INSTANCE
 export const apiClient = axios.create({
-  baseURL: BASE_URL,
+  baseURL: API_CONFIG.BASE_URL,
   headers: {
     "Content-Type": "application/json",
   },
@@ -20,20 +17,28 @@ export const apiClient = axios.create({
 
 // API METHODS
 export const fetchItems = async () => {
-  const { data } = await apiClient.get<ShoppingItem[]>("/items");
+  const { data } = await apiClient.get<ShoppingItem[]>(
+    API_CONFIG.ENDPOINTS.ITEMS,
+  );
   return data;
 };
 
 export const addItem = async (item: CreateShoppingItem) => {
-  const { data } = await apiClient.post<ShoppingItem>("/items", item);
+  const { data } = await apiClient.post<ShoppingItem>(
+    API_CONFIG.ENDPOINTS.ITEMS,
+    item,
+  );
   return data;
 };
 
 export const updateItem = async ({ id, ...updates }: UpdateItemArgs) => {
-  const { data } = await apiClient.patch<ShoppingItem>(`/items/${id}`, updates);
+  const { data } = await apiClient.patch<ShoppingItem>(
+    `${API_CONFIG.ENDPOINTS.ITEMS}/${id}`,
+    updates,
+  );
   return data;
 };
 
 export const deleteItem = async (id: string) => {
-  await apiClient.delete(`/items/${id}`);
+  await apiClient.delete(`${API_CONFIG.ENDPOINTS.ITEMS}/${id}`);
 };
